@@ -1,0 +1,63 @@
+{% include "header.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{item.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="item-heading">
+            <h1>{{item.label}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- item Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div>
+          <img src="{{item.img_url}}", width="400", height=""></div>
+          {{ item.description|safe }}<br>
+          Price: ${{ item.price }}<br>
+          Remaining: {{ item.quantity }}<br>
+
+          <hr>
+
+            <div class="clearfix">
+            <a class="btn btn-primary float-right" background-color='green' href="{{url_for('buy_item', item_id=item.id)}}">Buy item</a>
+            </div>
+
+
+                {{ ckeditor.load() }}
+                {{ ckeditor.config(name='comment_text') }}
+                {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+<!--           Comments Area -->
+          <div class="col-lg-8 col-md-10 mx-auto comment">
+            {% for comment in item.comments: %}
+              <ul class="commentList">
+                <li>
+                    <div class="commenterImage">
+                      <img src="{{ comment.comment_author.email | gravatar }}"/>
+                    </div>
+                    <div class="commentText">
+                      {{ comment.text|safe }}
+                      <span class="date sub-text">{{ comment.comment_author.name }}</span>
+                    </div>
+                </li>
+              </ul>
+            {% endfor %}
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+  </article>
+
+  <hr>
+{% include "footer.html" %}
